@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>用例图 · Use Case Diagram</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0f1117; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; padding: 40px 20px; }
+  h1 { text-align: center; font-size: 22px; font-weight: 600; color: #f8fafc; margin-bottom: 8px; }
+  p.sub { text-align: center; color: #64748b; font-size: 13px; margin-bottom: 40px; }
+</style>
+</head>
+<body>
+<h1>用例图 · Use Case Diagram</h1>
+<p class="sub">zj-baby 照片展示站 · 参与者与系统交互</p>
+
+<div style="overflow-x: auto;">
+<svg width="900" height="620" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto;">
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#64748b"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#10b981"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#ef4444"/>
+    </marker>
+    <marker id="arrow-yellow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#f59e0b"/>
+    </marker>
+  </defs>
+
+  <!-- ===== ACTORS ===== -->
+
+  <!-- Guest -->
+  <circle cx="80" cy="100" r="24" fill="none" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="80" y1="124" x2="80" y2="160" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="50" y1="142" x2="110" y2="142" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="80" y1="160" x2="50" y2="188" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="80" y1="160" x2="110" y2="188" stroke="#94a3b8" stroke-width="2"/>
+  <text x="80" y="205" text-anchor="middle" fill="#94a3b8" font-size="12">👤 游客</text>
+  <text x="80" y="220" text-anchor="middle" fill="#64748b" font-size="10">(Guest)</text>
+
+  <!-- Registered User -->
+  <circle cx="80" cy="310" r="24" fill="none" stroke="#3b82f6" stroke-width="2"/>
+  <line x1="80" y1="334" x2="80" y2="370" stroke="#3b82f6" stroke-width="2"/>
+  <line x1="50" y1="352" x2="110" y2="352" stroke="#3b82f6" stroke-width="2"/>
+  <line x1="80" y1="370" x2="50" y2="398" stroke="#3b82f6" stroke-width="2"/>
+  <line x1="80" y1="370" x2="110" y2="398" stroke="#3b82f6" stroke-width="2"/>
+  <text x="80" y="415" text-anchor="middle" fill="#3b82f6" font-size="12">👤 注册用户</text>
+  <text x="80" y="430" text-anchor="middle" fill="#64748b" font-size="10">(User)</text>
+
+  <!-- Admin -->
+  <circle cx="80" cy="510" r="24" fill="none" stroke="#ef4444" stroke-width="2"/>
+  <line x1="80" y1="534" x2="80" y2="570" stroke="#ef4444" stroke-width="2"/>
+  <line x1="50" y1="552" x2="110" y2="552" stroke="#ef4444" stroke-width="2"/>
+  <line x1="80" y1="570" x2="50" y2="598" stroke="#ef4444" stroke-width="2"/>
+  <line x1="80" y1="570" x2="110" y2="598" stroke="#ef4444" stroke-width="2"/>
+  <text x="80" y="615" text-anchor="middle" fill="#ef4444" font-size="12">🔧 管理员</text>
+  <text x="80" y="630" text-anchor="middle" fill="#64748b" font-size="10">(Admin)</text>
+
+  <!-- ===== SYSTEM BOUNDARY ===== -->
+  <rect x="170" y="30" width="700" height="580" rx="12" fill="none" stroke="#334155" stroke-width="2" stroke-dasharray="8 4"/>
+  <rect x="170" y="30" width="700" height="36" rx="12" fill="#1e293b" stroke="#334155"/>
+  <rect x="170" y="48" width="700" height="18" fill="#1e293b"/>
+  <text x="520" y="52" text-anchor="middle" fill="#94a3b8" font-size="13" font-weight="600">zj-baby 照片展示站</text>
+
+  <!-- ===== USE CASES — PUBLIC (Guest) ===== -->
+  <!-- Browse Home -->
+  <ellipse cx="340" cy="90" rx="95" ry="28" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="340" y="95" text-anchor="middle" fill="#e2e8f0" font-size="11">🏠 浏览首页</text>
+
+  <!-- Browse Gallery -->
+  <ellipse cx="530" cy="90" rx="95" ry="28" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="530" y="95" text-anchor="middle" fill="#e2e8f0" font-size="11">🖼️ 浏览瀑布流</text>
+
+  <!-- Browse Timeline -->
+  <ellipse cx="720" cy="90" rx="95" ry="28" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="720" y="95" text-anchor="middle" fill="#e2e8f0" font-size="11">📅 浏览时间线</text>
+
+  <!-- View Photo -->
+  <ellipse cx="530" cy="165" rx="95" ry="28" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="530" y="170" text-anchor="middle" fill="#e2e8f0" font-size="11">📷 查看照片</text>
+
+  <!-- View Album -->
+  <ellipse cx="720" cy="165" rx="95" ry="28" fill="#1e293b" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="720" y="170" text-anchor="middle" fill="#e2e8f0" font-size="11">📚 浏览相册</text>
+
+  <!-- Favorite (Guest) -->
+  <ellipse cx="340" cy="165" rx="95" ry="28" fill="#1e293b" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="340" y="170" text-anchor="middle" fill="#e2e8f0" font-size="11">⭐ 收藏照片</text>
+
+  <!-- Register/Login -->
+  <ellipse cx="270" cy="310" rx="90" ry="28" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="270" y="315" text-anchor="middle" fill="#e2e8f0" font-size="11">📝 注册 / 登录</text>
+
+  <!-- View Private Album -->
+  <ellipse cx="450" cy="310" rx="95" ry="28" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="450" y="315" text-anchor="middle" fill="#e2e8f0" font-size="11">🔒 查看私有相册</text>
+
+  <!-- Manage Favorites -->
+  <ellipse cx="630" cy="310" rx="95" ry="28" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="630" y="315" text-anchor="middle" fill="#e2e8f0" font-size="11">❤️ 管理收藏</text>
+
+  <!-- ===== ADMIN USE CASES ===== -->
+  <!-- Upload Photo -->
+  <ellipse cx="340" cy="400" rx="90" ry="28" fill="#1e293b" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="340" y="405" text-anchor="middle" fill="#e2e8f0" font-size="11">📤 上传照片</text>
+
+  <!-- Manage Albums -->
+  <ellipse cx="530" cy="400" rx="90" ry="28" fill="#1e293b" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="530" y="405" text-anchor="middle" fill="#e2e8f0" font-size="11">📁 管理相册</text>
+
+  <!-- Manage Tags -->
+  <ellipse cx="340" cy="475" rx="90" ry="28" fill="#1e293b" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="340" y="480" text-anchor="middle" fill="#e2e8f0" font-size="11"> 🏷️ 管理标签</text>
+
+  <!-- Manage Users -->
+  <ellipse cx="530" cy="475" rx="90" ry="28" fill="#1e293b" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="530" y="480" text-anchor="middle" fill="#e2e8f0" font-size="11">👥 管理用户</text>
+
+  <!-- Dashboard -->
+  <ellipse cx="720" cy="400" rx="90" ry="28" fill="#1e293b" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="720" y="405" text-anchor="middle" fill="#e2e8f0" font-size="11">📊 管理仪表盘</text>
+
+  <!-- ===== ASSOCIATIONS ===== -->
+  <!-- Guest associations -->
+  <line x1="104" y1="108" x2="246" y2="98" stroke="#94a3b8" stroke-width="1.3" marker-end="url(#arrow)"/>
+  <line x1="104" y1="112" x2="436" y2="98" stroke="#94a3b8" stroke-width="1.3" marker-end="url(#arrow)"/>
+  <line x1="104" y1="112" x2="626" y2="98" stroke="#94a3b8" stroke-width="1.3" marker-end="url(#arrow)"/>
+  <line x1="104" y1="115" x2="436" y2="158" stroke="#94a3b8" stroke-width="1.3" marker-end="url(#arrow)"/>
+  <line x1="104" y1="115" x2="626" y2="158" stroke="#94a3b8" stroke-width="1.3" marker-end="url(#arrow)"/>
+  <line x1="104" y1="172" x2="246" y2="172" stroke="#a78bfa" stroke-width="1.3" marker-end="url(#arrow)"/>
+
+  <!-- User associations -->
+  <line x1="104" y1="318" x2="182" y2="316" stroke="#3b82f6" stroke-width="1.3" marker-end="url(#arrow-blue)"/>
+  <line x1="104" y1="322" x2="356" y2="316" stroke="#3b82f6" stroke-width="1.3" marker-end="url(#arrow-blue)"/>
+  <line x1="104" y1="322" x2="536" y2="316" stroke="#3b82f6" stroke-width="1.3" marker-end="url(#arrow-blue)"/>
+  <!-- Favorite for user -->
+  <line x1="104" y1="322" x2="246" y2="172" stroke="#3b82f6" stroke-width="1.3" marker-end="url(#arrow-blue)"/>
+  <!-- View private album -->
+  <line x1="104" y1="322" x2="356" y2="316" stroke="#3b82f6" stroke-width="1.3"/>
+
+  <!-- Admin associations -->
+  <line x1="104" y1="518" x2="251" y2="407" stroke="#ef4444" stroke-width="1.3" marker-end="url(#arrow-red)"/>
+  <line x1="104" y1="522" x2="441" y2="407" stroke="#ef4444" stroke-width="1.3" marker-end="url(#arrow-red)"/>
+  <line x1="104" y1="522" x2="251" y2="482" stroke="#ef4444" stroke-width="1.3" marker-end="url(#arrow-red)"/>
+  <line x1="104" y1="522" x2="441" y2="482" stroke="#ef4444" stroke-width="1.3" marker-end="url(#arrow-red)"/>
+  <line x1="104" y1="522" x2="631" y2="407" stroke="#ef4444" stroke-width="1.3" marker-end="url(#arrow-red)"/>
+  <!-- Admin also does user stuff -->
+  <line x1="104" y1="504" x2="182" y2="316" stroke="#ef4444" stroke-width="1.3" stroke-dasharray="5 3"/>
+  <line x1="104" y1="504" x2="356" y2="316" stroke="#ef4444" stroke-width="1.3" stroke-dasharray="5 3"/>
+  <line x1="104" y1="504" x2="536" y2="316" stroke="#ef4444" stroke-width="1.3" stroke-dasharray="5 3"/>
+
+  <!-- ===== INCLUDES / EXTENDS ===== -->
+  <!-- Browse Gallery includes View Photo -->
+  <line x1="530" y1="118" x2="530" y2="138" stroke="#64748b" stroke-width="1.2" stroke-dasharray="4 2)"/>
+  <text x="545" y="132" fill="#64748b" font-size="9">«include»</text>
+
+  <!-- Browse Album includes View Photo -->
+  <line x1="720" y1="193" x2="620" y2="183" stroke="#64748b" stroke-width="1.2" stroke-dasharray="4 2)"/>
+  <text x="660" y="185" fill="#64748b" font-size="9">«include»</text>
+
+  <!-- Register includes Generate VisitorId -->
+  <line x1="270" y1="282" x2="270" y2="245" stroke="#64748b" stroke-width="1.2" stroke-dasharray="4 2)"/>
+  <text x="283" y="268" fill="#64748b" font-size="9">«include»</text>
+  <ellipse cx="270" cy="235" rx="75" ry="20" fill="#1e293b" stroke="#64748b" stroke-width="1" stroke-dasharray="4 2"/>
+  <text x="270" y="240" text-anchor="middle" fill="#64748b" font-size="9">🆔 生成 VisitorId</text>
+
+  <!-- Login includes Merge Favorites -->
+  <line x1="195" y1="310" x2="180" y2="270" stroke="#f59e0b" stroke-width="1.2" stroke-dasharray="4 2)"/>
+  <text x="200" y="295" fill="#f59e0b" font-size="9">«extend»</text>
+  <text x="200" y="285" fill="#f59e0b" font-size="9">(合并收藏)</text>
+
+  <!-- ===== LEGEND ===== -->
+  <rect x="20" y="450" width="280" height="150" rx="8" fill="#1e293b" stroke="#334155"/>
+  <text x="36" y="472" fill="#f8fafc" font-size="12" font-weight="600">图例</text>
+  <line x1="36" y1="490" x2="76" y2="490" stroke="#94a3b8" stroke-width="1.5"/>
+  <polygon points="76,486 83,490 76,494" fill="#94a3b8"/>
+  <text x="90" y="493" fill="#94a3b8" font-size="10">游客</text>
+  <line x1="36" y1="508" x2="76" y2="508" stroke="#3b82f6" stroke-width="1.5"/>
+  <polygon points="76,504 83,508 76,512" fill="#3b82f6"/>
+  <text x="90" y="511" fill="#3b82f6" font-size="10">注册用户</text>
+  <line x1="36" y1="526" x2="76" y2="526" stroke="#ef4444" stroke-width="1.5"/>
+  <polygon points="76,522 83,526 76,530" fill="#ef4444"/>
+  <text x="90" y="529" fill="#ef4444" font-size="10">管理员</text>
+  <line x1="160" y1="490" x2="200" y2="490" stroke="#64748b" stroke-width="1.2" stroke-dasharray="4 2)"/>
+  <text x="206" y="493" fill="#64748b" font-size="10">«include»</text>
+  <line x1="160" y1="508" x2="200" y2="508" stroke="#f59e0b" stroke-width="1.2" stroke-dasharray="4 2)"/>
+  <text x="206" y="511" fill="#f59e0b" font-size="10">«extend»</text>
+  <line x1="160" y1="526" x2="200" y2="526" stroke="#ef4444" stroke-width="1.3" stroke-dasharray="5 3)"/>
+  <text x="206" y="529" fill="#64748b" font-size="10">继承权限</text>
+
+</svg>
+</div>
+</body>
+</html>

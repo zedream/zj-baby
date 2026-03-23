@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>时序图：游客注册 + 合并收藏</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0f1117; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; padding: 40px 20px; }
+  h1 { text-align: center; font-size: 22px; font-weight: 600; color: #f8fafc; margin-bottom: 8px; }
+  p.sub { text-align: center; color: #64748b; font-size: 13px; margin-bottom: 40px; }
+</style>
+</head>
+<body>
+<h1>时序图：游客注册 + 合并收藏</h1>
+<p class="sub">Visitor → Registered User，Pending Favorites Merge Flow</p>
+
+<div style="overflow-x: auto;">
+<svg width="950" height="760" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto;">
+
+  <!-- Background -->
+  <rect width="950" height="760" fill="#0f1117"/>
+
+  <!-- ========== LIFELINES ========== -->
+  <!-- Column headers -->
+  <rect x="60" y="10" width="130" height="32" rx="6" fill="#1e293b" stroke="#334155"/>
+  <text x="125" y="30" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="600">Browser</text>
+
+  <rect x="220" y="10" width="130" height="32" rx="6" fill="#1e293b" stroke="#334155"/>
+  <text x="285" y="30" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="600">Nuxt SSR</text>
+
+  <rect x="380" y="10" width="130" height="32" rx="6" fill="#1e293b" stroke="#334155"/>
+  <text x="445" y="30" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="600">API Server</text>
+
+  <rect x="540" y="10" width="130" height="32" rx="6" fill="#1e293b" stroke="#334155"/>
+  <text x="605" y="30" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="600">SQLite/DB</text>
+
+  <rect x="700" y="10" width="130" height="32" rx="6" fill="#1e293b" stroke="#334155"/>
+  <text x="765" y="30" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="600">GitHub API</text>
+
+  <!-- Dashed lifelines -->
+  <line x1="125" y1="42" x2="125" y2="740" stroke="#334155" stroke-width="1.5" stroke-dasharray="6 3"/>
+  <line x1="285" y1="42" x2="285" y2="740" stroke="#334155" stroke-width="1.5" stroke-dasharray="6 3"/>
+  <line x1="445" y1="42" x2="445" y2="740" stroke="#334155" stroke-width="1.5" stroke-dasharray="6 3"/>
+  <line x1="605" y1="42" x2="605" y2="740" stroke="#334155" stroke-width="1.5" stroke-dasharray="6 3"/>
+  <line x1="765" y1="42" x2="765" y2="740" stroke="#334155" stroke-width="1.5" stroke-dasharray="6 3"/>
+
+  <!-- ========== PHASE 1: REGISTRATION ========== -->
+  <!-- Phase label -->
+  <rect x="20" y="60" width="130" height="22" rx="4" fill="#3b82f6" opacity="0.9"/>
+  <text x="85" y="75" text-anchor="middle" fill="white" font-size="11" font-weight="600">① 注册流程</text>
+
+  <!-- Arrow: Browser → Nuxt -->
+  <line x1="125" y1="95" x2="265" y2="95" stroke="#60a5fa" stroke-width="1.5"/>
+  <polygon points="265,91 272,95 265,99" fill="#60a5fa"/>
+  <text x="195" y="88" text-anchor="middle" fill="#60a5fa" font-size="10">POST /api/auth/register</text>
+  <text x="195" y="108" text-anchor="middle" fill="#64748b" font-size="9">{username, email, password}</text>
+
+  <!-- Arrow: Nuxt → API -->
+  <line x1="285" y1="125" x2="425" y2="125" stroke="#60a5fa" stroke-width="1.5"/>
+  <polygon points="425,121 432,125 425,129" fill="#60a5fa"/>
+  <text x="355" y="118" text-anchor="middle" fill="#60a5fa" font-size="10">createUser()</text>
+
+  <!-- Arrow: API → DB -->
+  <line x1="445" y1="155" x2="585" y2="155" stroke="#60a5fa" stroke-width="1.5"/>
+  <polygon points="585,151 592,155 585,159" fill="#60a5fa"/>
+  <text x="515" y="148" text-anchor="middle" fill="#60a5fa" font-size="10">INSERT User</text>
+
+  <!-- Return: DB → API -->
+  <line x1="585" y1="175" x2="445" y2="175" stroke="#22c55e" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <polygon points="445,171 438,175 445,179" fill="#22c55e"/>
+  <text x="515" y="168" text-anchor="middle" fill="#22c55e" font-size="9">userId ✓</text>
+
+  <!-- Return: API → Nuxt -->
+  <line x1="425" y1="195" x2="285" y2="195" stroke="#22c55e" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <polygon points="285,191 278,195 285,199" fill="#22c55e"/>
+  <text x="355" y="188" text-anchor="middle" fill="#22c55e" font-size="9">JWT token ✓</text>
+
+  <!-- Return: Nuxt → Browser -->
+  <line x1="265" y1="215" x2="125" y2="215" stroke="#22c55e" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <polygon points="125,211 118,215 125,219" fill="#22c55e"/>
+  <text x="195" y="208" text-anchor="middle" fill="#22c55e" font-size="9">200 OK ✓</text>
+
+  <!-- ========== PHASE 2: MERGE FAVORITES ========== -->
+  <rect x="20" y="235" width="130" height="22" rx="4" fill="#f59e0b" opacity="0.9"/>
+  <text x="85" y="250" text-anchor="middle" fill="white" font-size="11" font-weight="600">② 收藏合并</text>
+
+  <!-- Arrow: Browser → API (auto after register) -->
+  <line x1="125" y1="270" x2="425" y2="270" stroke="#fbbf24" stroke-width="1.5"/>
+  <polygon points="425,266 432,270 425,274" fill="#fbbf24"/>
+  <text x="275" y="263" text-anchor="middle" fill="#fbbf24" font-size="10">POST /api/favorites/merge</text>
+  <text x="275" y="283" text-anchor="middle" fill="#64748b" font-size="9">{visitorId, JWT}</text>
+
+  <!-- Arrow: API → DB (query pending) -->
+  <line x1="445" y1="305" x2="585" y2="305" stroke="#fbbf24" stroke-width="1.5"/>
+  <polygon points="585,301 592,305 585,309" fill="#fbbf24"/>
+  <text x="515" y="298" text-anchor="middle" fill="#fbbf24" font-size="10">SELECT pending</text>
+  <text x="515" y="312" text-anchor="middle" fill="#64748b" font-size="9">WHERE visitorId = ?</text>
+
+  <!-- Return: DB → API (pending records) -->
+  <line x1="585" y1="332" x2="445" y2="332" stroke="#22c55e" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <polygon points="445,328 438,332 445,336" fill="#22c55e"/>
+  <text x="515" y="325" text-anchor="middle" fill="#22c55e" font-size="9">pending records[]</text>
+
+  <!-- Self-call: API deduplicate (note) -->
+  <rect x="470" y="345" width="130" height="20" rx="4" fill="#1e293b" stroke="#f59e0b" stroke-width="1"/>
+  <text x="535" y="358" text-anchor="middle" fill="#f59e0b" font-size="9">去重：同 photoId 保留最早</text>
+  <path d="M 505 355 Q 490 355 490 370" stroke="#f59e0b" stroke-width="1" fill="none"/>
+  <path d="M 490 370 Q 490 380 500 380" stroke="#f59e0b" stroke-width="1" fill="none"/>
+  <polygon points="500,376 500,384 508,380" fill="#f59e0b"/>
+
+  <!-- Arrow: API → DB (batch update) -->
+  <line x1="445" y1="385" x2="585" y2="385" stroke="#fbbf24" stroke-width="1.5"/>
+  <polygon points="585,381 592,385 585,389" fill="#fbbf24"/>
+  <text x="515" y="378" text-anchor="middle" fill="#fbbf24" font-size="10">UPDATE status=merged</text>
+  <text x="515" y="392" text-anchor="middle" fill="#64748b" font-size="9">SET userId, mergedAt, status</text>
+
+  <!-- Return: DB → API -->
+  <line x1="585" y1="405" x2="445" y2="405" stroke="#22c55e" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <polygon points="445,401 438,405 445,409" fill="#22c55e"/>
+  <text x="515" y="398" text-anchor="middle" fill="#22c55e" font-size="9">updated N rows ✓</text>
+
+  <!-- Return: API → Browser -->
+  <line x1="425" y1="425" x2="125" y2="425" stroke="#22c55e" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <polygon points="125,421 118,425 125,429" fill="#22c55e"/>
+  <text x="275" y="418" text-anchor="middle" fill="#22c55e" font-size="9">200 OK {merged: N}</text>
+
+  <!-- Arrow: API → GitHub (cleanup) -->
+  <line x1="445" y1="445" x2="745" y2="445" stroke="#64748b" stroke-width="1" stroke-dasharray="4 2"/>
+  <polygon points="745,441 752,445 745,449" fill="#64748b"/>
+  <text x="595" y="438" text-anchor="middle" fill="#64748b" font-size="9">DELETE visitor record</text>
+
+  <!-- Return: GitHub → API -->
+  <line x1="745" y1="465" x2="445" y2="465" stroke="#64748b" stroke-width="1" stroke-dasharray="4 2"/>
+  <polygon points="445,461 438,465 445,469" fill="#64748b"/>
+
+  <!-- ========== PHASE 3: SUBSEQUENT LOGIN ========== -->
+  <rect x="20" y="485" width="130" height="22" rx="4" fill="#10b981" opacity="0.9"/>
+  <text x="85" y="500" text-anchor="middle" fill="white" font-size="11" font-weight="600">③ 再次登录（另一设备）</text>
+
+  <!-- Arrow: Browser → API -->
+  <line x1="125" y1="520" x2="425" y2="520" stroke="#34d399" stroke-width="1.5"/>
+  <polygon points="425,516 432,520 425,524" fill="#34d399"/>
+  <text x="275" y="513" text-anchor="middle" fill="#34d399" font-size="10">POST /api/auth/login</text>
+  <text x="275" y="533" text-anchor="middle" fill="#64748b" font-size="9">{email, password}</text>
+
+  <!-- Arrow: API → DB auth -->
+  <line x1="445" y1="555" x2="585" y2="555" stroke="#34d399" stroke-width="1.5"/>
+  <polygon points="585,551 592,555 585,559" fill="#34d399"/>
+  <text x="515" y="548" text-anchor="middle" fill="#34d399" font-size="10">SELECT User WHERE email</text>
+
+  <!-- Return: DB → API -->
+  <line x1="585" y1="575" x2="445" y2="575" stroke="#22c55e" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <polygon points="445,571 438,575 445,579" fill="#22c55e"/>
+  <text x="515" y="568" text-anchor="middle" fill="#22c55e" font-size="9">user found ✓</text>
+
+  <!-- Return: API → Browser -->
+  <line x1="425" y1="595" x2="125" y2="595" stroke="#22c55e" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <polygon points="125,591 118,595 125,599" fill="#22c55e"/>
+  <text x="275" y="588" text-anchor="middle" fill="#22c55e" font-size="9">JWT token ✓</text>
+
+  <!-- ========== PHASE 4: ANOTHER VISITOR ID MERGE ========== -->
+  <rect x="20" y="615" width="130" height="22" rx="4" fill="#f59e0b" opacity="0.9"/>
+  <text x="85" y="630" text-anchor="middle" fill="white" font-size="11" font-weight="600">④ 另一 visitorId 合并</text>
+
+  <!-- Arrow: Browser → API -->
+  <line x1="125" y1="655" x2="425" y2="655" stroke="#fbbf24" stroke-width="1.5"/>
+  <polygon points="425,651 432,655 425,659" fill="#fbbf24"/>
+  <text x="275" y="648" text-anchor="middle" fill="#fbbf24" font-size="10">POST /api/favorites/merge</text>
+  <text x="275" y="668" text-anchor="middle" fill="#64748b" font-size="9">new visitorId + JWT (same user)</text>
+
+  <!-- Arrow: API → DB -->
+  <line x1="445" y1="690" x2="585" y2="690" stroke="#fbbf24" stroke-width="1.5"/>
+  <polygon points="585,686 592,690 585,694" fill="#fbbf24"/>
+  <text x="515" y="683" text-anchor="middle" fill="#fbbf24" font-size="10">SELECT pending</text>
+
+  <!-- Arrow: API → DB update -->
+  <line x1="445" y1="705" x2="585" y2="705" stroke="#fbbf24" stroke-width="1.5"/>
+  <polygon points="585,701 592,705 585,709" fill="#fbbf24"/>
+  <text x="515" y="698" text-anchor="middle" fill="#fbbf24" font-size="10">UPDATE merged → same userId</text>
+
+  <!-- Return: DB → API -->
+  <line x1="585" y1="725" x2="445" y2="725" stroke="#22c55e" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <polygon points="445,721 438,725 445,729" fill="#22c55e"/>
+  <text x="515" y="718" text-anchor="middle" fill="#22c55e" font-size="9">N more merged ✓</text>
+
+  <!-- Return: API → Browser -->
+  <line x1="425" y1="740" x2="125" y2="740" stroke="#22c55e" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <polygon points="125,736 118,740 125,744" fill="#22c55e"/>
+  <text x="275" y="733" text-anchor="middle" fill="#22c55e" font-size="9">200 OK</text>
+
+  <!-- ========== LEGEND ========== -->
+  <rect x="20" y="695" width="900" height="50" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="34" y="712" fill="#f8fafc" font-size="11" font-weight="600">图例</text>
+  <line x1="34" y1="722" x2="74" y2="722" stroke="#60a5fa" stroke-width="1.5"/>
+  <polygon points="74,718 81,722 74,726" fill="#60a5fa"/>
+  <text x="86" y="725" fill="#94a3b8" font-size="10">同步请求</text>
+  <line x1="170" y1="722" x2="210" y2="722" stroke="#22c55e" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <polygon points="170,718 163,722 170,726" fill="#22c55e"/>
+  <text x="216" y="725" fill="#94a3b8" font-size="10">响应返回</text>
+  <line x1="300" y1="722" x2="340" y2="722" stroke="#64748b" stroke-width="1" stroke-dasharray="4 2"/>
+  <polygon points="340,718 347,722 340,726" fill="#64748b"/>
+  <text x="350" y="725" fill="#94a3b8" font-size="10">清理/辅助</text>
+  <rect x="440" y="714" width="130" height="16" rx="3" fill="#1e293b" stroke="#f59e0b"/>
+  <text x="505" y="725" text-anchor="middle" fill="#f59e0b" font-size="9">业务逻辑处理</text>
+
+</svg>
+</div>
+</body>
+</html>

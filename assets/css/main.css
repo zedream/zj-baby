@@ -1,0 +1,18 @@
+/* Global styles */
+:root {
+  --color-dark: #0f1117;
+  --color-dark-2: #111;
+  --color-primary: #3b82f6;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  background-color: var(--color-dark);
+  color: #e2e8f0;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}

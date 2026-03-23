@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>活动图 · Activity Diagram</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0f1117; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; padding: 40px 20px; }
+  h1 { text-align: center; font-size: 22px; font-weight: 600; color: #f8fafc; margin-bottom: 8px; }
+  p.sub { text-align: center; color: #64748b; font-size: 13px; margin-bottom: 40px; }
+</style>
+</head>
+<body>
+<h1>活动图 · Activity Diagram</h1>
+<p class="sub">照片上传流程 &amp; 游客收藏合并流程</p>
+
+<div style="overflow-x: auto;">
+<svg width="1000" height="780" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto;">
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L8,4 z" fill="#64748b"/>
+    </marker>
+    <marker id="arr-green" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L8,4 z" fill="#22c55e"/>
+    </marker>
+    <marker id="arr-red" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L8,4 z" fill="#ef4444"/>
+    </marker>
+    <marker id="arr-blue" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0,0 L0,8 L8,4 z" fill="#3b82f6"/>
+    </marker>
+  </defs>
+
+  <!-- ==================== LEFT: PHOTO UPLOAD ==================== -->
+  <text x="200" y="30" text-anchor="middle" fill="#f8fafc" font-size="15" font-weight="700">📤 照片上传流程</text>
+
+  <!-- Start -->
+  <circle cx="200" cy="60" r="10" fill="#10b981"/>
+  <text x="200" y="64" text-anchor="middle" fill="white" font-size="10">●</text>
+
+  <!-- Admin uploads -->
+  <rect x="100" y="90" width="200" height="40" rx="20" fill="#1e293b" stroke="#10b981" stroke-width="2"/>
+  <text x="200" y="115" text-anchor="middle" fill="#e2e8f0" font-size="12">👤 管理员上传照片</text>
+
+  <!-- Validation -->
+  <rect x="100" y="155" width="200" height="40" rx="8" fill="#1e293b" stroke="#64748b" stroke-width="1.5"/>
+  <text x="200" y="180" text-anchor="middle" fill="#94a3b8" font-size="11">📋 验证文件格式/大小</text>
+
+  <!-- Branch: valid? -->
+  <polygon points="200,215 240,255 200,295 160,255" fill="#1e293b" stroke="#64748b" stroke-width="1.5"/>
+  <text x="200" y="260" text-anchor="middle" fill="#94a3b8" font-size="10">合格?</text>
+
+  <!-- Reject -->
+  <rect x="20" y="315" width="130" height="35" rx="6" fill="#1e293b" stroke="#ef4444" stroke-width="1.5"/>
+  <text x="85" y="337" text-anchor="middle" fill="#ef4444" font-size="11">❌ 返回错误</text>
+  <line x1="160" y1="255" x2="85" y2="315" stroke="#ef4444" stroke-width="1.5" marker-end="url(#arr-red)"/>
+  <text x="100" y="290" fill="#ef4444" font-size="9">否</text>
+
+  <!-- End reject -->
+  <circle cx="85" cy="365" r="8" fill="#ef4444"/>
+  <line x1="85" y1="350" x2="85" y2="357" stroke="#ef4444" stroke-width="2"/>
+
+  <!-- Yes path: resize -->
+  <rect x="100" y="315" width="200" height="40" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="200" y="340" text-anchor="middle" fill="#3b82f6" font-size="11">🖼️ 生成缩略图</text>
+  <line x1="200" y1="295" x2="200" y2="315" stroke="#10b981" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="215" y="308" fill="#10b981" font-size="9">是</text>
+
+  <!-- Write local -->
+  <rect x="100" y="375" width="200" height="40" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="200" y="400" text-anchor="middle" fill="#3b82f6" font-size="11">💾 写入本地目录</text>
+  <line x1="200" y1="355" x2="200" y2="375" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- GitHub commit -->
+  <rect x="100" y="435" width="200" height="40" rx="8" fill="#1e293b" stroke="#6b7280" stroke-width="1.5"/>
+  <text x="200" y="460" text-anchor="middle" fill="#9ca3af" font-size="11">🐙 Commit 到 GitHub</text>
+  <line x1="200" y1="415" x2="200" y2="435" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Cloudflare deploy -->
+  <rect x="100" y="495" width="200" height="40" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="200" y="520" text-anchor="middle" fill="#f59e0b" font-size="11">☁️ Cloudflare 部署</text>
+  <line x1="200" y1="475" x2="200" y2="495" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Save DB -->
+  <rect x="100" y="555" width="200" height="40" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+  <text x="200" y="580" text-anchor="middle" fill="#10b981" font-size="11">🗄️ 保存元数据到 SQLite</text>
+  <line x1="200" y1="535" x2="200" y2="555" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Success -->
+  <circle cx="200" cy="630" r="10" fill="#10b981"/>
+  <text x="200" y="634" text-anchor="middle" fill="white" font-size="10">●</text>
+  <line x1="200" y1="595" x2="200" y2="620" stroke="#10b981" stroke-width="1.5" marker-end="url(#arr-green)"/>
+
+  <!-- ==================== RIGHT: FAVORITES MERGE ==================== -->
+  <text x="720" y="30" text-anchor="middle" fill="#f8fafc" font-size="15" font-weight="700">⭐ 收藏合并流程</text>
+
+  <!-- Start -->
+  <circle cx="720" cy="60" r="10" fill="#a78bfa"/>
+  <text x="720" y="64" text-anchor="middle" fill="white" font-size="10">●</text>
+
+  <!-- Visitor browse -->
+  <rect x="600" y="90" width="240" height="40" rx="20" fill="#1e293b" stroke="#a78bfa" stroke-width="2"/>
+  <text x="720" y="115" text-anchor="middle" fill="#e2e8f0" font-size="12">👤 游客浏览照片</text>
+
+  <!-- Click favorite -->
+  <rect x="600" y="155" width="240" height="40" rx="8" fill="#1e293b" stroke="#64748b" stroke-width="1.5"/>
+  <text x="720" y="180" text-anchor="middle" fill="#94a3b8" font-size="11">❤️ 点击收藏</text>
+  <line x1="720" y1="130" x2="720" y2="155" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Decision: logged in? -->
+  <polygon points="720,215 770,255 720,295 670,255" fill="#1e293b" stroke="#64748b" stroke-width="1.5"/>
+  <text x="720" y="258" text-anchor="middle" fill="#94a3b8" font-size="10">登录?</text>
+
+  <!-- No: save as pending -->
+  <rect x="810" y="265" width="170" height="40" rx="8" fill="#1e293b" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="895" y="290" text-anchor="middle" fill="#a78bfa" font-size="11">📝 写入 Favorite(pending)</text>
+  <line x1="770" y1="268" x2="810" y2="285" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="790" y="260" fill="#a78bfa" font-size="9">否</text>
+
+  <!-- Yes: save merged directly -->
+  <rect x="600" y="315" width="240" height="40" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+  <text x="720" y="340" text-anchor="middle" fill="#10b981" font-size="11">⭐ 直接写入 Favorite(merged)</text>
+  <line x1="720" y1="295" x2="720" y2="315" stroke="#10b981" stroke-width="1.5" marker-end="url(#arr-green)"/>
+  <text x="738" y="308" fill="#10b981" font-size="9">是</text>
+
+  <!-- Fork: both paths converge -->
+  <!-- End pending -->
+  <circle cx="895" cy="340" r="8" fill="#a78bfa"/>
+  <text x="895" y="344" text-anchor="middle" fill="white" font-size="10">●</text>
+  <line x1="895" y1="305" x2="895" y2="332" stroke="#a78bfa" stroke-width="1.5"/>
+
+  <!-- End merged -->
+  <circle cx="720" cy="390" r="8" fill="#10b981"/>
+  <text x="720" y="394" text-anchor="middle" fill="white" font-size="10">●</text>
+  <line x1="720" y1="355" x2="720" y2="382" stroke="#10b981" stroke-width="1.5"/>
+
+  <!-- ========== LOGIN / REGISTER MERGE ========== -->
+  <rect x="540" y="420" width="360" height="50" rx="8" fill="#0f172a" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="6 3"/>
+  <text x="720" y="445" text-anchor="middle" fill="#f59e0b" font-size="12" font-weight="600">🔐 登录 / 注册时 — 批量合并收藏</text>
+  <text x="720" y="462" text-anchor="middle" fill="#64748b" font-size="10">POST /api/favorites/merge</text>
+
+  <!-- Login/Register -->
+  <circle cx="470" cy="510" r="8" fill="#3b82f6"/>
+  <line x1="540" y1="470" x2="478" y2="502" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="510" y="490" fill="#f59e0b" font-size="9">触发</text>
+
+  <!-- Get pending -->
+  <rect x="560" y="490" width="200" height="40" rx="8" fill="#1e293b" stroke="#64748b" stroke-width="1.5"/>
+  <text x="660" y="515" text-anchor="middle" fill="#94a3b8" font-size="11">🔍 查找该 visitorId</text>
+  <text x="660" y="528" text-anchor="middle" fill="#64748b" font-size="10">所有 pending 记录</text>
+
+  <!-- Dedup -->
+  <rect x="560" y="550" width="200" height="40" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="660" y="575" text-anchor="middle" fill="#f59e0b" font-size="11">🔄 去重：保留最早</text>
+  <text x="660" y="588" text-anchor="middle" fill="#64748b" font-size="10">同一 photoId</text>
+
+  <!-- Batch update -->
+  <rect x="560" y="610" width="200" height="40" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+  <text x="660" y="635" text-anchor="middle" fill="#10b981" font-size="11">✅ 批量更新为 merged</text>
+  <text x="660" y="648" text-anchor="middle" fill="#64748b" font-size="10">userId + mergedAt</text>
+
+  <!-- Merge done -->
+  <circle cx="660" cy="690" r="8" fill="#22c55e"/>
+  <text x="660" y="694" text-anchor="middle" fill="white" font-size="10">●</text>
+  <line x1="660" y1="650" x2="660" y2="682" stroke="#22c55e" stroke-width="1.5" marker-end="url(#arr-green)"/>
+
+  <!-- Arrows connecting -->
+  <line x1="660" y1="530" x2="660" y2="550" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="660" y1="590" x2="660" y2="610" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ==================== LEGEND ==================== -->
+  <rect x="20" y="660" width="960" height="100" rx="8" fill="#1e293b" stroke="#334155"/>
+  <text x="36" y="682" fill="#f8fafc" font-size="12" font-weight="600">图例</text>
+  <circle cx="60" cy="705" r="8" fill="#10b981"/>
+  <text x="60" y="709" text-anchor="middle" fill="white" font-size="8">●</text>
+  <text x="75" y="708" fill="#94a3b8" font-size="10">开始/结束</text>
+  <rect x="160" y="697" width="120" height="24" rx="12" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+  <text x="220" y="712" text-anchor="middle" fill="#94a3b8" font-size="9">活动 / 操作</text>
+  <polygon points="340,709 360,725 340,741 320,725" fill="#1e293b" stroke="#64748b" stroke-width="1.5"/>
+  <text x="380" y="712" fill="#94a3b8" font-size="10">判断 / 分支</text>
+  <line x1="480" y1="709" x2="520" y2="709" stroke="#10b981" stroke-width="1.5"/>
+  <polygon points="520,705 527,709 520,713" fill="#10b981"/>
+  <text x="536" y="712" fill="#94a3b8" font-size="10">正常流程</text>
+  <line x1="640" y1="709" x2="680" y2="709" stroke="#ef4444" stroke-width="1.5"/>
+  <polygon points="680,705 687,709 680,713" fill="#ef4444"/>
+  <text x="696" y="712" fill="#ef4444" font-size="10">拒绝 / 错误</text>
+  <rect x="780" y="697" width="180" height="24" rx="4" fill="#0f172a" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4 2"/>
+  <text x="870" y="712" text-anchor="middle" fill="#f59e0b" font-size="9">并发 / 子流程</text>
+
+</svg>
+</div>
+</body>
+</html>

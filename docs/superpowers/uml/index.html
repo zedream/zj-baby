@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>UML 图集 · zj-baby</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0f1117; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; padding: 40px 20px; }
+  h1 { text-align: center; font-size: 24px; font-weight: 700; color: #f8fafc; margin-bottom: 8px; }
+  p.sub { text-align: center; color: #64748b; font-size: 13px; margin-bottom: 50px; }
+</style>
+</head>
+<body>
+<h1>📐 UML 图集</h1>
+<p class="sub">zj-baby 照片展示站 · 软件设计文档</p>
+
+<style>
+  .cards { display: flex; flex-direction: column; gap: 16px; max-width: 700px; margin: 0 auto; }
+  .card { background: #1e293b; border-radius: 12px; padding: 20px 24px; border: 1px solid #334155; cursor: pointer; transition: all 0.2s; text-decoration: none; display: block; }
+  .card:hover { border-color: #3b82f6; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(59,130,246,0.15); }
+  .card h3 { color: #f8fafc; font-size: 16px; margin-bottom: 6px; }
+  .card p { color: #94a3b8; font-size: 13px; }
+  .card .tag { display: inline-block; background: #0f172a; color: #64748b; font-size: 11px; padding: 3px 10px; border-radius: 20px; margin-top: 10px; border: 1px solid #334155; }
+  .card .tag.blue { border-color: #3b82f6; color: #3b82f6; }
+  .card .tag.green { border-color: #10b981; color: #10b981; }
+  .card .tag.yellow { border-color: #f59e0b; color: #f59e0b; }
+  .card .tag.purple { border-color: #a78bfa; color: #a78bfa; }
+  .card .tag.red { border-color: #ef4444; color: #ef4444; }
+  .section-label { text-align: center; color: #64748b; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin: 30px auto 14px; }
+</style>
+
+<div class="cards">
+
+  <div class="section-label">📊 结构建模</div>
+
+  <a class="card" href="diagrams/01-usecase.html" target="_blank">
+    <h3>📋 用例图 · Use Case Diagram</h3>
+    <p>参与者（游客 / 用户 / 管理员）与系统的交互用例全景图</p>
+    <span class="tag blue">UML 用例建模</span>
+  </a>
+
+  <a class="card" href="diagrams/04-er.html" target="_blank">
+    <h3>🗄️ ER 图 · Entity-Relationship Diagram</h3>
+    <p>数据库实体关系：Album、Photo、User、Visitor、Favorite、Tag、PhotoTag</p>
+    <span class="tag green">数据库设计</span>
+  </a>
+
+  <div class="section-label">🔄 行为建模</div>
+
+  <a class="card" href="diagrams/02-activity.html" target="_blank">
+    <h3>🏃 活动图 · Activity Diagram</h3>
+    <p>两个核心流程：照片上传（Admin）和收藏合并（游客→用户）</p>
+    <span class="tag yellow">UML 活动建模</span>
+  </a>
+
+  <a class="card" href="diagrams/03-state-machine.html" target="_blank">
+    <h3>⚡ 状态图 · State Machine Diagram</h3>
+    <p>Favorite 实体状态流转：pending → merged → deleted</p>
+    <span class="tag purple">UML 状态建模</span>
+  </a>
+
+  <a class="card" href="diagrams/05-sequence.html" target="_blank">
+    <h3>📨 时序图 · Sequence Diagram</h3>
+    <p>游客注册 + 合并收藏的完整时序：Browser → Nuxt → API → DB</p>
+    <span class="tag purple">UML 顺序建模</span>
+  </a>
+
+  <div class="section-label">🏗️ 系统架构</div>
+
+  <a class="card" href="diagrams/06-architecture.html" target="_blank">
+    <h3>🖥️ 架构图 · Architecture Diagram</h3>
+    <p>Nuxt 3 SSR · SQLite · GitHub · Cloudflare Pages 完整系统架构</p>
+    <span class="tag red">系统架构</span>
+  </a>
+
+</div>
+
+<style>
+  footer { text-align: center; margin-top: 60px; color: #334155; font-size: 12px; }
+</style>
+<footer>
+  📁 docs/superpowers/uml/diagrams/<br>
+  对应软设计师考点：UML建模 · 用例图 · ER图 · 活动图 · 状态图 · 时序图 · 架构图
+</footer>
+</body>
+</html>
