@@ -184,6 +184,51 @@ const groupedByYear = computed(() => {
   left: calc(50% + 20px);
 }
 
+/* Mobile: collapse to single column */
+@media (max-width: 768px) {
+  .timeline {
+    padding: 40px 16px;
+  }
+
+  .timeline__title {
+    font-size: 24px;
+  }
+
+  .timeline__center-line {
+    left: 20px;
+  }
+
+  .timeline__item {
+    padding-left: 56px !important;
+    padding-right: 0 !important;
+    flex-direction: column !important;
+    align-items: flex-start;
+  }
+
+  .timeline__item--left,
+  .timeline__item--right {
+    justify-content: flex-start;
+  }
+
+  .timeline__dot {
+    left: 20px;
+    top: 20px;
+    transform: translate(-50%, 0);
+  }
+
+  .timeline__date {
+    position: static;
+    transform: none;
+    margin-bottom: 8px;
+    margin-left: 36px;
+  }
+
+  .timeline__card {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
 /* 卡片 */
 .timeline__card {
   background: #1e293b;

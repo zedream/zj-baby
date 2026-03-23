@@ -143,6 +143,33 @@ const toggleFilter = (tag: string) => {
   column-gap: 16px;
 }
 
+@media (max-width: 1024px) {
+  .gallery__masonry {
+    columns: 3 160px;
+  }
+}
+
+@media (max-width: 768px) {
+  .gallery__masonry {
+    columns: 2 140px;
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery {
+    padding: 16px;
+  }
+
+  .gallery__masonry {
+    columns: 1;
+    column-gap: 12px;
+  }
+
+  .gallery__item {
+    margin-bottom: 12px;
+  }
+}
+
 .gallery__item {
   break-inside: avoid;
   margin-bottom: 16px;

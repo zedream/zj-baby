@@ -180,4 +180,32 @@ const placeholderImg = (seed = 1) => `https://picsum.photos/800/600?random=${see
   font-size: 12px;
   color: #64748b;
 }
+
+@media (max-width: 640px) {
+  .hero {
+    padding: 60px 16px 40px;
+  }
+
+  .hero__title {
+    font-size: 36px;
+  }
+
+  .hero__subtitle {
+    font-size: 15px;
+  }
+
+  .hero__actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .featured__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .quick-links {
+    flex-direction: column;
+    padding: 0 16px 60px;
+  }
+}
 </style>
