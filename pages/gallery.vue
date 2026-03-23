@@ -1,7 +1,6 @@
 <script setup lang="ts">
 definePageMeta({ title: '瀑布流' })
 
-// 占位图片生成
 const placeholderImg = (w: number, h: number, seed?: number) => {
   const s = seed ?? Math.floor(Math.random() * 1000)
   return `https://picsum.photos/${w}/${h}?random=${s}`
@@ -64,11 +63,12 @@ const toggleFilter = (tag: string) => {
 
 <template>
   <div class="gallery">
+    <!-- Filter bar -->
     <div class="gallery__filters">
       <button
         v-for="tag in allTags"
         :key="tag"
-        class="gallery__filter-btn"
+        class="filter-btn"
         :class="{ active: activeFilters.includes(tag) }"
         @click="toggleFilter(tag)"
       >
@@ -76,12 +76,12 @@ const toggleFilter = (tag: string) => {
       </button>
     </div>
 
+    <!-- Masonry grid -->
     <div class="gallery__masonry">
       <div
         v-for="photo in filteredPhotos"
         :key="photo.id"
         class="gallery__item"
-        @click="$emit('photo-click', photo.id)"
       >
         <img
           :src="photo.src"
@@ -90,18 +90,20 @@ const toggleFilter = (tag: string) => {
           loading="lazy"
         />
         <div class="gallery__overlay">
-          <span class="gallery__tag">{{ photo.title }}</span>
+          <span class="text-xs text-white">{{ photo.title }}</span>
         </div>
       </div>
     </div>
 
-    <div v-if="filteredPhotos.length === 0" class="gallery__empty">
-      <p>暂无符合条件的照片</p>
+    <!-- Empty state -->
+    <div v-if="filteredPhotos.length === 0" class="text-center py-20 text-[#64748b]">
+      暂无符合条件的照片
     </div>
   </div>
 </template>
 
 <style scoped>
+/* Masonry 需要 CSS columns，UnoCSS 无法替代 */
 .gallery {
   min-height: 100vh;
   background: #111;
@@ -116,7 +118,7 @@ const toggleFilter = (tag: string) => {
   justify-content: center;
 }
 
-.gallery__filter-btn {
+.filter-btn {
   padding: 6px 16px;
   border-radius: 20px;
   border: 1px solid #334155;
@@ -127,12 +129,12 @@ const toggleFilter = (tag: string) => {
   transition: all 0.2s;
 }
 
-.gallery__filter-btn:hover {
+.filter-btn:hover {
   border-color: #3b82f6;
   color: #e2e8f0;
 }
 
-.gallery__filter-btn.active {
+.filter-btn.active {
   background: #3b82f6;
   border-color: #3b82f6;
   color: white;
@@ -141,33 +143,6 @@ const toggleFilter = (tag: string) => {
 .gallery__masonry {
   columns: 4 200px;
   column-gap: 16px;
-}
-
-@media (max-width: 1024px) {
-  .gallery__masonry {
-    columns: 3 160px;
-  }
-}
-
-@media (max-width: 768px) {
-  .gallery__masonry {
-    columns: 2 140px;
-  }
-}
-
-@media (max-width: 480px) {
-  .gallery {
-    padding: 16px;
-  }
-
-  .gallery__masonry {
-    columns: 1;
-    column-gap: 12px;
-  }
-
-  .gallery__item {
-    margin-bottom: 12px;
-  }
 }
 
 .gallery__item {
@@ -205,14 +180,15 @@ const toggleFilter = (tag: string) => {
   opacity: 1;
 }
 
-.gallery__tag {
-  font-size: 12px;
-  color: white;
+@media (max-width: 1024px) {
+  .gallery__masonry { columns: 3 160px; }
 }
-
-.gallery__empty {
-  text-align: center;
-  padding: 80px;
-  color: #64748b;
+@media (max-width: 768px) {
+  .gallery__masonry { columns: 2 140px; }
+}
+@media (max-width: 480px) {
+  .gallery { padding: 16px; }
+  .gallery__masonry { columns: 1; }
+  .gallery__item { margin-bottom: 12px; }
 }
 </style>

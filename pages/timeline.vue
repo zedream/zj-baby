@@ -6,7 +6,6 @@ const placeholderImg = (w: number, h: number, seed?: number) => {
   return `https://picsum.photos/${w}/${h}?random=${s}`
 }
 
-// 按年份组织时间线
 const timelineData = ref<Array<{
   year: string
   month: string
@@ -85,7 +84,7 @@ const groupedByYear = computed(() => {
         <div class="timeline__dot" />
         <div class="timeline__date">{{ item.month }}.{{ item.day }}</div>
 
-        <div class="timeline__card" @click="$emit('photo-click', idx)">
+        <div class="timeline__card">
           <img :src="item.src" :alt="item.title" class="timeline__img" loading="lazy" />
           <div class="timeline__card-title">{{ item.title }}</div>
         </div>
@@ -95,6 +94,7 @@ const groupedByYear = computed(() => {
 </template>
 
 <style scoped>
+/* UnoCSS 无法处理的复杂布局，保留在 style 中 */
 .timeline {
   min-height: 100vh;
   background: #0f1117;
@@ -110,7 +110,6 @@ const groupedByYear = computed(() => {
   margin-bottom: 80px;
 }
 
-/* 中间时间线 */
 .timeline__center-line {
   position: absolute;
   left: 50%;
@@ -133,7 +132,6 @@ const groupedByYear = computed(() => {
   margin-bottom: 40px;
 }
 
-/* 时间线项 */
 .timeline__item {
   display: flex;
   align-items: center;
@@ -153,7 +151,6 @@ const groupedByYear = computed(() => {
   justify-content: flex-end;
 }
 
-/* 中间圆点 */
 .timeline__dot {
   position: absolute;
   left: 50%;
@@ -182,6 +179,32 @@ const groupedByYear = computed(() => {
 
 .timeline__item--right .timeline__date {
   left: calc(50% + 20px);
+}
+
+.timeline__card {
+  background: #1e293b;
+  border-radius: 12px;
+  overflow: hidden;
+  max-width: 360px;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.timeline__card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(59, 130, 246, 0.15);
+}
+
+.timeline__img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.timeline__card-title {
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #e2e8f0;
 }
 
 /* Mobile: collapse to single column */
@@ -227,32 +250,5 @@ const groupedByYear = computed(() => {
     max-width: 100%;
     width: 100%;
   }
-}
-
-/* 卡片 */
-.timeline__card {
-  background: #1e293b;
-  border-radius: 12px;
-  overflow: hidden;
-  max-width: 360px;
-  cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.timeline__card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(59, 130, 246, 0.15);
-}
-
-.timeline__img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-.timeline__card-title {
-  padding: 12px 16px;
-  font-size: 14px;
-  color: #e2e8f0;
 }
 </style>
