@@ -2,20 +2,34 @@
 definePageMeta({ title: '时间线' })
 
 const placeholderImg = (w: number, h: number, seed?: number) => {
-  const s = seed ?? Math.floor(Math.random() * 1000)
-  return `https://picsum.photos/${w}/${h}?random=${s}`
+  return `https://picsum.photos/${w}/${h}?random=${seed}`
 }
 
-const timelineData = ref<Array<{
+interface TimelineItem {
   year: string
   month: string
   day: string
   title: string
   src: string
   side: 'left' | 'right'
-}>>([])
+  loaded: boolean
+}
 
-const generateTimeline = () => {
+const timelineData = ref<TimelineItem[]>([])
+
+// 分页配置
+const BATCH_SIZE = 9 // 每次加载9条
+const visibleCount = ref(BATCH_SIZE)
+const isLoading = ref(false)
+const allLoaded = ref(false)
+
+// 禁止滚动
+const scrollLocked = ref(false)
+
+const visibleItems = computed(() => timelineData.value.slice(0, visibleCount.value))
+
+// 生成所有数据
+const generateAll = () => {
   const years = ['2024', '2023', '2022']
   const months = ['01', '02', '03', '04', '05', '06']
   const days = ['15', '20', '28']
@@ -25,7 +39,7 @@ const generateTimeline = () => {
   ]
 
   let side: 'left' | 'right' = 'left'
-  const items = []
+  const items: TimelineItem[] = []
 
   for (const year of years) {
     for (const month of months) {
@@ -39,6 +53,7 @@ const generateTimeline = () => {
           title,
           src: placeholderImg(400, 300, items.length + 10),
           side,
+          loaded: false,
         })
         side = side === 'left' ? 'right' : 'left'
       }
@@ -48,86 +63,150 @@ const generateTimeline = () => {
   return items
 }
 
+// 图片加载完成
+const onImgLoad = (index: number) => {
+  timelineData.value[index].loaded = true
+
+  // 检查是否全部可见图片都加载完了
+  const visible = timelineData.value.slice(0, visibleCount.value)
+  if (visible.every(item => item.loaded) && !isLoading.value) {
+    scrollLocked.value = false
+  }
+}
+
+// 加载更多
+const loadMore = () => {
+  if (isLoading.value || allLoaded.value || scrollLocked.value) return
+  if (visibleCount.value >= timelineData.value.length) return
+
+  scrollLocked.value = true
+  isLoading.value = true
+
+  // 模拟网络延迟
+  setTimeout(() => {
+    const nextCount = Math.min(visibleCount.value + BATCH_SIZE, timelineData.value.length)
+    visibleCount.value = nextCount
+
+    if (nextCount >= timelineData.value.length) {
+      allLoaded.value = true
+    }
+
+    isLoading.value = false
+    // 等待图片加载完成后才解锁滚动
+  }, 300)
+}
+
+// 监听滚动
+const handleScroll = () => {
+  if (scrollLocked.value || isLoading.value) return
+
+  const scrollTop = window.scrollY
+  const docHeight = document.documentElement.scrollHeight
+  const winHeight = window.innerHeight
+
+  // 滚动到距离底部 200px 时触发加载
+  if (scrollTop + winHeight >= docHeight - 200) {
+    loadMore()
+  }
+}
+
 onMounted(() => {
-  timelineData.value = generateTimeline()
+  timelineData.value = generateAll()
+  window.addEventListener('scroll', handleScroll, { passive: true })
+})
 
-  // Wait for DOM to render, then set up lazy loading
-  nextTick(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const img = entry.target as HTMLImageElement
-            const src = img.dataset.src
-            if (src) {
-              img.src = src
-              img.classList.add('loaded')
-            }
-            observer.unobserve(img)
-          }
-        })
-      },
-      {
-        rootMargin: '200px',
-        threshold: 0,
-      }
-    )
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
 
-    document.querySelectorAll('.lazy-img').forEach((img) => {
-      observer.observe(img)
-    })
-  })
+// 当可见项变化时，检查是否需要解锁滚动
+watch(visibleCount, () => {
+  // 等到下一帧检查图片加载状态
+  setTimeout(() => {
+    const visible = timelineData.value.slice(0, visibleCount.value)
+    if (visible.length > 0 && visible.every(item => item.loaded)) {
+      scrollLocked.value = false
+    }
+  }, 100)
 })
 
 const groupedByYear = computed(() => {
-  const groups: Record<string, typeof timelineData.value> = {}
-  for (const item of timelineData.value) {
+  const groups: Record<string, TimelineItem[]> = {}
+  for (const item of visibleItems.value) {
     if (!groups[item.year]) groups[item.year] = []
     groups[item.year].push(item)
   }
   return groups
 })
+
+const isItemLoaded = (item: TimelineItem) => item.loaded
 </script>
 
 <template>
-  <div class="timeline">
-    <h1 class="timeline__title">时光轴</h1>
+  <!-- 禁止滚动时给 body 加这个 class -->
+  <div :class="{ 'overflow-hidden': scrollLocked }">
+    <div class="timeline">
+      <h1 class="timeline__title">时光轴</h1>
 
-    <div class="timeline__center-line" />
-
-    <div
-      v-for="(items, year) in groupedByYear"
-      :key="year"
-      class="timeline__year-group"
-    >
-      <div class="timeline__year-label">{{ year }}</div>
+      <div class="timeline__center-line" />
 
       <div
-        v-for="(item, idx) in items"
-        :key="idx"
-        class="timeline__item"
-        :class="`timeline__item--${item.side}`"
+        v-for="(items, year) in groupedByYear"
+        :key="year"
+        class="timeline__year-group"
       >
-        <div class="timeline__dot" />
-        <div class="timeline__date">{{ item.month }}.{{ item.day }}</div>
+        <div class="timeline__year-label">{{ year }}</div>
 
-        <div class="timeline__card">
-          <img
-            ref="imgRefs"
-            :data-src="item.src"
-            :alt="item.title"
-            class="timeline__img lazy-img"
-            loading="lazy"
-          />
-          <div class="timeline__card-title">{{ item.title }}</div>
+        <div
+          v-for="(item, idx) in items"
+          :key="`${item.year}-${item.month}-${item.day}-${idx}`"
+          class="timeline__item"
+          :class="`timeline__item--${item.side}`"
+        >
+          <div class="timeline__dot" />
+          <div class="timeline__date">{{ item.month }}.{{ item.day }}</div>
+
+          <div class="timeline__card">
+            <div class="timeline__img-wrapper">
+              <img
+                :src="item.src"
+                :alt="item.title"
+                class="timeline__img"
+                :class="{ 'is-loaded': isItemLoaded(item) }"
+                @load="onImgLoad(visibleItems.indexOf(item))"
+              />
+              <div v-if="!isItemLoaded(item)" class="timeline__img-skeleton" />
+            </div>
+            <div class="timeline__card-title">{{ item.title }}</div>
+          </div>
         </div>
+      </div>
+
+      <!-- 加载中 -->
+      <div v-if="isLoading" class="timeline__loading">
+        <div class="loading-spinner" />
+        <span>加载中...</span>
+      </div>
+
+      <!-- 全部加载完 -->
+      <div v-if="allLoaded" class="timeline__end">
+        <span>— 已加载全部 {{ timelineData.length }} 条 —</span>
+      </div>
+
+      <!-- 提示滚动解锁 -->
+      <div v-if="scrollLocked && !isLoading && !allLoaded" class="timeline__hint">
+        图片加载中，请稍候...
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-/* UnoCSS 无法处理的复杂布局，保留在 style 中 */
+.overflow-hidden {
+  height: 100vh;
+  overflow: hidden;
+}
+
 .timeline {
   min-height: 100vh;
   background: #0f1117;
@@ -155,8 +234,6 @@ const groupedByYear = computed(() => {
 
 .timeline__year-group {
   margin-bottom: 60px;
-  content-visibility: auto;
-  contain-intrinsic-size: 0 600px;
 }
 
 .timeline__year-label {
@@ -230,17 +307,39 @@ const groupedByYear = computed(() => {
   box-shadow: 0 12px 40px rgba(59, 130, 246, 0.15);
 }
 
+.timeline__img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background: #1e293b;
+}
+
 .timeline__img {
   width: 100%;
   height: 200px;
   object-fit: cover;
   opacity: 0;
   transition: opacity 0.4s ease;
-  background: #1e293b;
 }
 
-.timeline__img.loaded {
+.timeline__img.is-loaded {
   opacity: 1;
+}
+
+.timeline__img-skeleton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
 .timeline__card-title {
@@ -249,7 +348,49 @@ const groupedByYear = computed(() => {
   color: #e2e8f0;
 }
 
-/* Mobile: collapse to single column */
+.timeline__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 40px;
+  color: #64748b;
+}
+
+.loading-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #334155;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.timeline__end {
+  text-align: center;
+  padding: 40px;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.timeline__hint {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(59, 130, 246, 0.9);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  z-index: 100;
+}
+
+/* Mobile */
 @media (max-width: 768px) {
   .timeline {
     padding: 40px 16px;
