@@ -50,6 +50,32 @@ const generateTimeline = () => {
 
 onMounted(() => {
   timelineData.value = generateTimeline()
+
+  // Intersection Observer for lazy loading images
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const img = entry.target as HTMLImageElement
+          const src = img.dataset.src
+          if (src) {
+            img.src = src
+            img.classList.add('loaded')
+          }
+          observer.unobserve(img)
+        }
+      })
+    },
+    {
+      rootMargin: '200px', // Preload 200px before entering viewport
+      threshold: 0,
+    }
+  )
+
+  // Observe all lazy images
+  document.querySelectorAll('.lazy-img').forEach((img) => {
+    observer.observe(img)
+  })
 })
 
 const groupedByYear = computed(() => {
@@ -85,7 +111,13 @@ const groupedByYear = computed(() => {
         <div class="timeline__date">{{ item.month }}.{{ item.day }}</div>
 
         <div class="timeline__card">
-          <img :src="item.src" :alt="item.title" class="timeline__img" loading="lazy" />
+          <img
+            ref="imgRefs"
+            :data-src="item.src"
+            :alt="item.title"
+            class="timeline__img lazy-img"
+            loading="lazy"
+          />
           <div class="timeline__card-title">{{ item.title }}</div>
         </div>
       </div>
@@ -201,6 +233,13 @@ const groupedByYear = computed(() => {
   width: 100%;
   height: 200px;
   object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: #1e293b;
+}
+
+.timeline__img.loaded {
+  opacity: 1;
 }
 
 .timeline__card-title {
