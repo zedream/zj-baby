@@ -1,5 +1,8 @@
 <script setup lang="ts">
 definePageMeta({ title: '首页' })
+
+// Only load fullpage CSS on the homepage
+import 'fullpage.js/dist/fullpage.min.css'
 </script>
 
 <template>
