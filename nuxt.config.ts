@@ -20,7 +20,9 @@ export default defineNuxtConfig({
     githubToken: process.env.GITHUB_TOKEN || '',
   },
 
+  // For Cloudflare Pages static hosting
   nitro: {
+    preset: 'static',
     experimental: {
       asyncContext: true
     }
