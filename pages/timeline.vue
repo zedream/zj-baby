@@ -122,6 +122,8 @@ const groupedByYear = computed(() => {
 
 .timeline__year-group {
   margin-bottom: 60px;
+  content-visibility: auto;
+  contain-intrinsic-size: 0 600px;
 }
 
 .timeline__year-label {
