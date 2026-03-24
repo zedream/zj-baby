@@ -51,30 +51,31 @@ const generateTimeline = () => {
 onMounted(() => {
   timelineData.value = generateTimeline()
 
-  // Intersection Observer for lazy loading images
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const img = entry.target as HTMLImageElement
-          const src = img.dataset.src
-          if (src) {
-            img.src = src
-            img.classList.add('loaded')
+  // Wait for DOM to render, then set up lazy loading
+  nextTick(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const img = entry.target as HTMLImageElement
+            const src = img.dataset.src
+            if (src) {
+              img.src = src
+              img.classList.add('loaded')
+            }
+            observer.unobserve(img)
           }
-          observer.unobserve(img)
-        }
-      })
-    },
-    {
-      rootMargin: '200px', // Preload 200px before entering viewport
-      threshold: 0,
-    }
-  )
+        })
+      },
+      {
+        rootMargin: '200px',
+        threshold: 0,
+      }
+    )
 
-  // Observe all lazy images
-  document.querySelectorAll('.lazy-img').forEach((img) => {
-    observer.observe(img)
+    document.querySelectorAll('.lazy-img').forEach((img) => {
+      observer.observe(img)
+    })
   })
 })
 
