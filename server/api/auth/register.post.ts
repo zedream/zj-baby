@@ -4,6 +4,7 @@ import { eq } from 'drizzle-orm'
 import { nanoid } from 'nanoid'
 import bcrypt from 'bcryptjs'
 import { signJWT } from '~/server/utils/auth'
+import { mergeVisitorFavorites } from '~/server/utils/favorites'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
@@ -56,6 +57,10 @@ export default defineEventHandler(async (event) => {
     createdAt: now,
   })
 
+  // Merge visitor favorites on registration
+  const visitorId = getCookie(event, 'visitor_id')
+  const mergedCount = await mergeVisitorFavorites(userId, visitorId || null)
+
   // Generate token
   const token = await signJWT({ userId, role: 'user' })
 
@@ -67,5 +72,6 @@ export default defineEventHandler(async (event) => {
       email,
       role: 'user',
     },
+    mergedFavorites: mergedCount,
   }
 })

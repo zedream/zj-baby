@@ -3,6 +3,7 @@ import { users } from '~/server/db/schema'
 import { eq } from 'drizzle-orm'
 import bcrypt from 'bcryptjs'
 import { signJWT } from '~/server/utils/auth'
+import { mergeVisitorFavorites } from '~/server/utils/favorites'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
@@ -27,6 +28,10 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 401, message: 'Invalid credentials' })
   }
 
+  // Merge visitor favorites on login
+  const visitorId = getCookie(event, 'visitor_id')
+  const mergedCount = await mergeVisitorFavorites(user.id, visitorId || null)
+
   const token = await signJWT({ userId: user.id, role: user.role })
 
   return {
@@ -37,5 +42,6 @@ export default defineEventHandler(async (event) => {
       email: user.email,
       role: user.role,
     },
+    mergedFavorites: mergedCount,
   }
 })
