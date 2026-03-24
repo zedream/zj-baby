@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import fullpage from 'fullpage.js'
-
 const containerRef = ref<HTMLDivElement>()
 let fp: any = null
 
 const initFullpage = async () => {
   if (!containerRef.value) return
 
-  const { default: fp } = await import('fullpage.js')
+  // Only import on client side
+  const { default: fpModule } = await import('fullpage.js')
+
+  fp = fpModule
 
   fp(containerRef.value, {
     licenseKey: 'OPEN-SOURCE-GPLV3-LICENSE',
